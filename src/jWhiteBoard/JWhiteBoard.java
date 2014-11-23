@@ -119,7 +119,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
      */
     public void setGroupName(String groupName) {
         if(groupName != null)
-            groupName=groupName;
+            this.groupName=groupName;
     }
 
 

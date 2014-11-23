@@ -119,7 +119,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
      */
     public void setGroupName(String groupName) {
         if(groupName != null)
-            groupName=groupName;
+            this.groupName=groupName;
     }
 
 
@@ -268,10 +268,10 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
         drawPanel.setBackground(backgroundColor);
         subPanel=new JPanel();
         mainFrame.getContentPane().add("Center", drawPanel);
-        clearButton=new JButton("Clean");
+        clearButton=new JButton("Clear");
         clearButton.setFont(defaultFont);
         clearButton.addActionListener(this);
-        leaveButton=new JButton("Exit");
+        leaveButton=new JButton("Leave");
         leaveButton.setFont(defaultFont);
         leaveButton.addActionListener(this);
         subPanel.add("South", clearButton);

@@ -220,7 +220,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
      * Show help on Console screen
      */
     static void help() {
-        System.out.print("\nDraw [-help] [-no_channel] [-props <protocol stack definition>]" +
+        System.out.println("\nDraw [-help] [-no_channel] [-props <protocol stack definition>]" +
                 " [-clustername <name>] [-state] [-timeout <state timeout>] [-use_unicasts] " +
                 "[-bind_addr <addr>] [-jmx <true | false>] [-name <logical name>] [-send_own_state_on_merge true|false] " +
                              "[-uuid <UUID>]");

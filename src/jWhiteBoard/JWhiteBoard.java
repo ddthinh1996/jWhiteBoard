@@ -641,7 +641,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
          * When do a mouse drag, get coordinates ( X and Y) of the mouse, then send Draw command as a message to member of Group
          */
         public void mouseDragged(MouseEvent e) {
-            int                 x=e.getX(), y=e.getX();
+            int                 x=e.getX(), y=e.getY();
             DrawCommand         comm=new DrawCommand(DrawCommand.DRAW, x, y, drawColor.getRGB());
 
             if(noChannel) {

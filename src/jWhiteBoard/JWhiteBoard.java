@@ -582,7 +582,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
                     Point point=entry.getKey();
                     Color col=entry.getValue();
                     dos.writeInt(point.x);
-                    dos.writeInt(point.x);
+                    dos.writeInt(point.y);
                     dos.writeInt(col.getRGB());
                 }
                 dos.flush();

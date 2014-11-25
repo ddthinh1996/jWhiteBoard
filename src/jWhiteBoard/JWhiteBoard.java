@@ -226,7 +226,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
                              "[-uuid <UUID>]");
         System.out.println("-no_channel: doesn't use JGroups at all, any drawing will be relected on the " +
                 "whiteboard directly");
-        System.out.print("-props: argument can be an old-style protocol stack specification, or it can be " +
+        System.out.println("-props: argument can be an old-style protocol stack specification, or it can be " +
                 "a URL. In the latter case, the protocol specification will be read from the URL\n");
     }
 
@@ -642,7 +642,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
          * When do a mouse drag, get coordinates ( X and Y) of the mouse, then send Draw command as a message to member of Group
          */
         public void mouseDragged(MouseEvent e) {
-            int                 x=e.getX(), y=e.getX();
+            int                 x=e.getX(), y=e.getY();
             DrawCommand         comm=new DrawCommand(DrawCommand.DRAW, x, y, drawColor.getRGB());
 
             if(noChannel) {

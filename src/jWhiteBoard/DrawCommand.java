@@ -14,23 +14,29 @@ import java.io.DataOutput;
 public class DrawCommand implements Streamable {
     static final byte DRAW=1;
     static final byte CLEAR=2;
+    static final byte TEXT=3;
+    
     byte mode;
     int x;
     int y;
     int rgb;
-
+    String textMessage;
     public DrawCommand() { // needed for streamable
     }
 
     DrawCommand(byte mode) {
         this.mode=mode;
     }
-
+    DrawCommand(byte mode,String textMessage) {
+        this.mode=mode;
+        this.textMessage=textMessage;
+    }
     DrawCommand(byte mode, int x, int y, int rgb) {
         this.mode=mode;
         this.x=x;
         this.y=y;
         this.rgb=rgb;
+
     }
 
 

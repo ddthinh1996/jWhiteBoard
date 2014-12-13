@@ -1,5 +1,6 @@
 package jWhiteBoard;
 
+
 import org.jgroups.*;
 import org.jgroups.jmx.JmxConfigurator;
 import org.jgroups.stack.AddressGenerator;
@@ -7,40 +8,32 @@ import org.jgroups.util.OneTimeAddressGenerator;
 import org.jgroups.util.Util;
 
 import javax.management.MBeanServer;
-import javax.security.auth.x500.X500Principal;
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 import java.util.List;
 
+
 /**
- * Shared Whiteboard, each new instance joins the same group. Each instance
- * chooses a random color, mouse moves are broadcast to all group members, which
- * then apply them to their canvas
- * <p>
- * 
+ * Shared Whiteboard, each new instance joins the same group. Each instance chooses a random color,
+ * mouse moves are broadcast to all group members, which then apply them to their canvas <p>
  * @author Bela Ban, Oct 17 2001
  */
 
-public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
-		ChannelListener {
-	
+public class JWhiteBoard extends ReceiverAdapter implements ActionListener,ChannelListener {
 	protected String groupName = "";
-	//private Color x;
 	private JChannel channel = null;
 	private int memberSize = 1;
 	private JFrame mainFrame = null;
 	private JPanel subPanel = null;
 	private DrawPanel drawPanel = null;
-	private JButton clearButton, leaveButton, colorButton;
+	private JButton clearButton, leaveButton, colorbrushButton, colorbackgroundButton;
 	private final Random random = new Random(System.currentTimeMillis());
 	private final Font defaultFont = new Font("Helvetica", Font.PLAIN, 12);
-	//private final Color drawColor = new JColorChooser().showDialog(null,"Chon Mau Co Ve", x);
 	private Color drawColor = Color.BLACK;
-	private static final Color backgroundColor = Color.white;
+	private Color backgroundColor = Color.white;
 	boolean noChannel = false;
 	boolean jmx;
 	private boolean useState = false;
@@ -49,6 +42,8 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 	protected boolean send_own_state_on_merge = true;
 	private final List<Address> members = new ArrayList<Address>();
 
+	
+	
 	/**
 	 * Constructor 1
 	 * 
@@ -64,9 +59,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 	 * @throws Exception
 	 */
 	public JWhiteBoard(String props, boolean no_channel, boolean jmx,
-			boolean use_state, long state_timeout, boolean use_unicasts,
-			String name, boolean send_own_state_on_merge, AddressGenerator gen)
-			throws Exception {
+			boolean use_state, long state_timeout, boolean use_unicasts,String name, boolean send_own_state_on_merge, AddressGenerator gen)throws Exception {
 		this.noChannel = no_channel;
 		this.jmx = jmx;
 		this.useState = use_state;
@@ -74,7 +67,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 		this.use_unicasts = use_unicasts;
 		if (no_channel)
 			return;
-
+		
 		channel = new JChannel(props);
 		if (gen != null)
 			channel.addAddressGenerator(gen);
@@ -91,24 +84,20 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 	 * @param channel
 	 * @throws Exception
 	 */
-	public JWhiteBoard(JChannel channel) throws Exception {
-		this.channel = channel;
+	public JWhiteBoard(JChannel channel) throws Exception {this.channel = channel;
 		channel.setReceiver(this);
 		channel.addChannelListener(this);
 	}
 
+	
 	/**
 	 * Constructor 3
-	 * 
 	 * @param channel
-	 * @param use_state
-	 *            : Save state of Group
-	 * @param state_timeout
-	 *            : State time out
+	 * @param use_state: Save state of Group
+	 * @param state_timeout: State time out
 	 * @throws Exception
 	 */
-	public JWhiteBoard(JChannel channel, boolean use_state, long state_timeout)
-			throws Exception {
+	public JWhiteBoard(JChannel channel, boolean use_state, long state_timeout)throws Exception {
 		this.channel = channel;
 		channel.setReceiver(this);
 		channel.addChannelListener(this);
@@ -118,7 +107,6 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 
 	/**
 	 * Get the name of Group
-	 * 
 	 * @return Group name
 	 */
 	public String getGroupName() {
@@ -127,7 +115,6 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 
 	/**
 	 * Set name for Group
-	 * 
 	 * @param groupName
 	 */
 	public void setGroupName(String groupName) {
@@ -135,13 +122,12 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 			this.groupName = groupName;
 	}
 
+	
 	/**
 	 * Main function
-	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-
 		JWhiteBoard whiteBoard = null;
 		String props = null;
 		boolean no_channel = false;
@@ -229,39 +215,45 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 		}
 	}
 
+	
 	/**
 	 * Show help on Console screen
 	 */
 	static void help() {
-		System.out
-				.println("\nDraw [-help] [-no_channel] [-props <protocol stack definition>]"
+		System.out.println("\nDraw [-help] [-no_channel] [-props <protocol stack definition>]"
 						+ " [-clustername <name>] [-state] [-timeout <state timeout>] [-use_unicasts] "
 						+ "[-bind_addr <addr>] [-jmx <true | false>] [-name <logical name>] [-send_own_state_on_merge true|false] "
 						+ "[-uuid <UUID>]");
-		System.out
-				.println("-no_channel: doesn't use JGroups at all, any drawing will be relected on the "
+		System.out.println("-no_channel: doesn't use JGroups at all, any drawing will be relected on the "
 						+ "whiteboard directly");
-		System.out
-				.println("-props: argument can be an old-style protocol stack specification, or it can be "
+		System.out.println("-props: argument can be an old-style protocol stack specification, or it can be "
 						+ "a URL. In the latter case, the protocol specification will be read from the URL\n");
 	}
-	/*private Color selectColor(){
-	
-		return x ;
-	}
 
+	
 	/**
-	 * Send message to members in members list only.
-	 * 
+	 * Generate Random Color
+	 *  @return
+	 */
+	/*private Color selectColor(){
+		int red=Math.abs(random.nextInt()) % 255;
+		int green=Math.abs(random.nextInt()) % 255;
+		int blue=Math.abs(random.nextInt()) % 255;
+		 return new Color(red, green, blue);
+	}*/
+	
+	
+	/*
+	 * /** Send message to members in members list only.
 	 * @param buf
 	 * @throws Exception
-	 * 
 	 */
 	private void sendToAll(byte[] buf) throws Exception {
 		for (Address mbr : members)
 			channel.send(new Message(mbr, buf));
 	}
 
+	
 	/**
 	 * Init JWhiteBoard interface
 	 * 
@@ -270,34 +262,37 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 	public void go() throws Exception {
 		if (!noChannel && !useState)
 			channel.connect(groupName);
-		
 		mainFrame = new JFrame();
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		drawPanel = new DrawPanel(useState);
 		drawPanel.setBackground(backgroundColor);
 		subPanel = new JPanel();
 		mainFrame.getContentPane().add("Center", drawPanel);
-		colorButton = new JButton("Choose color");
-		colorButton.setFont(defaultFont);
-		colorButton.addActionListener(this);
+		colorbrushButton = new JButton("Brush color");
+		colorbrushButton.setFont(defaultFont);
+		colorbrushButton.addActionListener(this);
 		clearButton = new JButton("Clear");
 		clearButton.setFont(defaultFont);
 		clearButton.addActionListener(this);
 		leaveButton = new JButton("Leave");
 		leaveButton.setFont(defaultFont);
 		leaveButton.addActionListener(this);
-		subPanel.add("South",colorButton);
+		colorbackgroundButton = new JButton("Background color");
+		colorbackgroundButton.setFont(defaultFont);
+		colorbackgroundButton.addActionListener(this);
+		subPanel.add("South",colorbackgroundButton);
+		subPanel.add("South", colorbrushButton);
 		subPanel.add("South", clearButton);
 		subPanel.add("South", leaveButton);
 		mainFrame.getContentPane().add("South", subPanel);
 		mainFrame.setBackground(backgroundColor);
 		clearButton.setForeground(Color.blue);
 		leaveButton.setForeground(Color.blue);
-		colorButton.setForeground(Color.blue);
-
+		colorbrushButton.setForeground(Color.blue);
+		colorbackgroundButton.setForeground(Color.BLUE);
 		mainFrame.pack();
 		mainFrame.setLocation(15, 25);
-		mainFrame.setBounds(new Rectangle(300, 250));
+		mainFrame.setBounds(new Rectangle(400, 300));
 
 		if (!noChannel && useState) {
 			channel.connect(groupName, null, stateTimeout);
@@ -307,9 +302,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 
 	/**
 	 * Set Frame's title
-	 * 
-	 * @param title
-	 *            : frame's title
+	 * @param title: frame's title
 	 */
 	void setTitle(String title) {
 		String tmp = "";
@@ -326,24 +319,20 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 			mainFrame.setTitle(tmp);
 		}
 	}
-
 	void setTitle() {
 		setTitle(null);
 	}
-
 	/**
 	 * When receive a message, analyze message content and then execute the
 	 * command: Draw or Clear
 	 */
 	public void receive(Message msg) {
 		byte[] buf = msg.getRawBuffer();
-		if (buf == null) {
-			System.err.println("[" + channel.getAddress()
+		if (buf == null) {System.err.println("[" + channel.getAddress()
 					+ "] received null buffer from " + msg.getSrc()
 					+ ", headers: " + msg.printHeaders());
 			return;
 		}
-
 		try {
 			DrawCommand comm = (DrawCommand) Util.streamableFromByteBuffer(
 					DrawCommand.class, buf, msg.getOffset(), msg.getLength());
@@ -366,7 +355,6 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 			e.printStackTrace();
 		}
 	}
-	
 
 	public void appendTextMessage(DrawCommand comm) {
 		// TODO Auto-generated method stub
@@ -456,8 +444,9 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 			System.err.println(ex);
 		}
 	}
+
 	public void sendTextMessage(String textMessage) {
-		DrawCommand comm = new DrawCommand(DrawCommand.TEXT,textMessage);
+		DrawCommand comm = new DrawCommand(DrawCommand.TEXT, textMessage);
 		try {
 			byte[] buf = Util.streamableToByteBuffer(comm);
 			if (use_unicasts)
@@ -482,10 +471,24 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 			sendClearPanelMsg();
 		} else if ("Leave".equals(command)) {
 			stop();
-		} else	if("Choose color".equals(command)){
-			Color c = JColorChooser.showDialog(null, "Choose Color", Color.BLACK);
-			drawColor=c;
-			 
+		} else if ("Brush color".equals(command)) {
+			Color cbrush = JColorChooser.showDialog(null, "Choose Brush Color",
+					Color.BLACK);
+			drawColor = cbrush;
+
+		} else  if ("Background color".equals(command)) {
+			Color cbackground = JColorChooser.showDialog(null, "Choose Background Color",
+					Color.white);
+			Point p = mainFrame.getLocation();
+			mainFrame.dispose();
+			backgroundColor = cbackground;
+			try {
+				go();
+				mainFrame.setLocation(p);
+			}catch(Exception e1){
+				e1.printStackTrace();
+			}
+
 		} else
 			System.out.println("Unknown action");
 	}
@@ -690,8 +693,9 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 		 */
 		public void mouseDragged(MouseEvent e) {
 			int x = e.getX(), y = e.getY();
-			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, x, y,drawColor.getRGB());
-		
+			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, x, y,
+					drawColor.getRGB());
+
 			if (noChannel) {
 				drawPoint(comm);
 				return;

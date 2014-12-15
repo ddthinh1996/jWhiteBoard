@@ -292,7 +292,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		colorbackgroundButton.setForeground(Color.BLUE);
 		mainFrame.pack();
 		mainFrame.setLocation(15, 25);
-		mainFrame.setBounds(new Rectangle(400, 300));
+		mainFrame.setBounds(new Rectangle(500, 300));
 
 		if (!noChannel && useState) {
 			channel.connect(groupName, null, stateTimeout);

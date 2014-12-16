@@ -283,7 +283,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		colorbackgroundButton = new JButton("Background color");
 		colorbackgroundButton.setFont(defaultFont);
 		colorbackgroundButton.addActionListener(this);
-		String[] sList = { "5", "10", "15","20", "25", "30" };
+		String[] sList = { "5px", "10px", "15px","20px", "25px", "30px" };
 		cmb = new JComboBox(sList);
 		subPanel.add("South",cmb);
 		subPanel.add("South",colorbackgroundButton);
@@ -299,7 +299,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		colorbackgroundButton.setForeground(Color.BLUE);
 		mainFrame.pack();
 		mainFrame.setLocation(15, 25);
-		mainFrame.setBounds(new Rectangle(500, 300));
+		mainFrame.setBounds(new Rectangle(600, 300));
 
 		if (!noChannel && useState) {
 			channel.connect(groupName, null, stateTimeout);
@@ -322,7 +322,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		} else {
 			if (channel.getAddress() != null)
 				tmp += channel.getAddress();
-			tmp += " (" + memberSize + ")";
+			tmp += "(" + memberSize + ")";
 			mainFrame.setTitle(tmp);
 		}
 	}

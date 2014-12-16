@@ -9,6 +9,7 @@ import org.jgroups.util.Util;
 
 import javax.management.MBeanServer;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -36,6 +37,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 	private Color backgroundColor = Color.white;
 	boolean noChannel = false;
 	boolean jmx;
+	private JComboBox cmb;
 	private boolean useState = false;
 	private long stateTimeout = 5000;
 	private boolean use_unicasts = false;
@@ -263,6 +265,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		if (!noChannel && !useState)
 			channel.connect(groupName);
 		mainFrame = new JFrame();
+		mainFrame.setResizable(false);
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		drawPanel = new DrawPanel(useState);
 		drawPanel.setBackground(backgroundColor);
@@ -280,12 +283,16 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		colorbackgroundButton = new JButton("Background color");
 		colorbackgroundButton.setFont(defaultFont);
 		colorbackgroundButton.addActionListener(this);
+		String[] sList = { "1px", "2px", "3px" };
+		cmb = new JComboBox(sList);
+		subPanel.add("South",cmb);
 		subPanel.add("South",colorbackgroundButton);
 		subPanel.add("South", colorbrushButton);
 		subPanel.add("South", clearButton);
 		subPanel.add("South", leaveButton);
 		mainFrame.getContentPane().add("South", subPanel);
 		mainFrame.setBackground(backgroundColor);
+		cmb.setForeground(Color.blue);
 		clearButton.setForeground(Color.blue);
 		leaveButton.setForeground(Color.blue);
 		colorbrushButton.setForeground(Color.blue);

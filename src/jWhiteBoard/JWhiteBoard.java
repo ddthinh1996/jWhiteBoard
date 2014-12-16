@@ -283,7 +283,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		colorbackgroundButton = new JButton("Background color");
 		colorbackgroundButton.setFont(defaultFont);
 		colorbackgroundButton.addActionListener(this);
-		String[] sList = { "1px", "2px", "3px" };
+		String[] sList = { "5", "10", "15","20", "25", "30" };
 		cmb = new JComboBox(sList);
 		subPanel.add("South",cmb);
 		subPanel.add("South",colorbackgroundButton);
@@ -526,7 +526,8 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		for (Point point : copy.keySet()) {
 			// we don't need the color: it is our draw_color anyway
 			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, point.x,
-					point.y, drawColor.getRGB());
+					point.y, drawColor.getRGB(), Integer.parseInt(cmb.getSelectedItem().toString()));
+
 			try {
 				byte[] buf = Util.streamableToByteBuffer(comm);
 				if (use_unicasts)
@@ -701,8 +702,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		public void mouseDragged(MouseEvent e) {
 			int x = e.getX(), y = e.getY();
 			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, x, y,
-					drawColor.getRGB());
-
+					drawColor.getRGB(), Integer.parseInt(cmb.getSelectedItem().toString()));
 			if (noChannel) {
 				drawPoint(comm);
 				return;
@@ -736,7 +736,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 				return;
 			Color col = new Color(c.rgb);
 			gr.setColor(col);
-			gr.fillOval(c.x, c.y, 10, 10);
+			gr.fillOval(c.x, c.y, c.brushSize, c.brushSize);
 			repaint();
 			if (state != null) {
 				synchronized (state) {

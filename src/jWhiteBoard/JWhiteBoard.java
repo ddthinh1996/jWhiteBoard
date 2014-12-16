@@ -283,7 +283,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		colorbackgroundButton = new JButton("Background color");
 		colorbackgroundButton.setFont(defaultFont);
 		colorbackgroundButton.addActionListener(this);
-		String[] sList = { "5px", "10px", "15px","20px", "25px", "30px" };
+		String[] sList = { "5", "10", "15","20", "25", "30" };
 		cmb = new JComboBox(sList);
 		subPanel.add("South",cmb);
 		subPanel.add("South",colorbackgroundButton);

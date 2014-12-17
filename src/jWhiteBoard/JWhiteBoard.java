@@ -296,6 +296,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		mainFrame.getContentPane().add("South", subPanel);
 		mainFrame.setBackground(backgroundColor);
 		cmb.setForeground(Color.blue);
+		BrSize.setForeground(Color.blue);
 		clearButton.setForeground(Color.blue);
 		leaveButton.setForeground(Color.blue);
 		colorbrushButton.setForeground(Color.blue);

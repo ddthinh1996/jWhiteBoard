@@ -601,6 +601,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		 * @param use_state
 		 */
 		public DrawPanel(boolean use_state) {
+			setTitle();
 			if (use_state)
 				state = new LinkedHashMap<Point, Color>();
 			else

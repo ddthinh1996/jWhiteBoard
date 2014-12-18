@@ -38,7 +38,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 	boolean noChannel = false;
 	boolean jmx;
 	private JComboBox cmb;
-	private JLabel BrSize;
+	private JLabel BrSize,BrPx;
 	private boolean useState = false;
 	private long stateTimeout = 5000;
 	private boolean use_unicasts = false;
@@ -285,16 +285,19 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		colorbackgroundButton.setFont(defaultFont);
 		colorbackgroundButton.addActionListener(this);
 		BrSize = new JLabel("Choose Brush Size");
+		BrPx = new JLabel("Px");
 		String[] sList = { "5", "10", "15","20", "25", "30" };
 		cmb = new JComboBox(sList);
 		subPanel.add("South",BrSize);
 		subPanel.add("South",cmb);
+		subPanel.add("South",BrPx);
 		subPanel.add("South",colorbackgroundButton);
 		subPanel.add("South", colorbrushButton);
 		subPanel.add("South", clearButton);
 		subPanel.add("South", leaveButton);
 		mainFrame.getContentPane().add("South", subPanel);
 		mainFrame.setBackground(backgroundColor);
+		BrPx.setForeground(Color.blue);
 		cmb.setForeground(Color.blue);
 		BrSize.setForeground(Color.blue);
 		clearButton.setForeground(Color.blue);

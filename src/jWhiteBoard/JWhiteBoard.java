@@ -27,8 +27,12 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 	protected String groupName = "";
 	private JChannel channel = null;
 	private int memberSize = 1;
-	private JFrame mainFrame = null;
-	private JPanel subPanel = null;
+	private JFrame mainFrame = null, chatFrame = null, sendFrame = null;	private JPanel subPanel = null;
+	JTextArea txtout = new JTextArea();
+	JButton btnsend = new JButton("Send");
+	JTextField txtin = new JTextField();
+	JScrollPane scrout = new JScrollPane(txtout);
+	String stemp;
 	private DrawPanel drawPanel = null;
 	private JButton clearButton, leaveButton, colorbrushButton, colorbackgroundButton;
 	private final Random random = new Random(System.currentTimeMillis());
@@ -307,7 +311,30 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 		mainFrame.pack();
 		mainFrame.setLocation(15, 25);
 		mainFrame.setBounds(new Rectangle(600, 300));
+		chatFrame = new JFrame();
+		chatFrame.setVisible(true);
+		// chatFrame.add(txtout);
+		chatFrame.add(txtin);
+		chatFrame.add(btnsend);
+		chatFrame.add(scrout);
+		chatFrame.setLayout(null);
+		chatFrame.setTitle("ChatBox");
+		scrout.setBounds(5, 10, 275, 220);
+		txtin.setBounds(5, 235, 200, 30);
+		btnsend.setBounds(205, 235, 75, 30);
+		txtout.setEditable(false);
+		btnsend.addActionListener(new ActionListener() {
 
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				stemp = txtin.getText();
+				sendTextMessage(stemp.toString());
+				txtin.setText("");
+			}
+		});
+		chatFrame.setLocation(15, 25);
+		chatFrame.setBounds(605, 0, 300, 305);
+		
 		if (!noChannel && useState) {
 			channel.connect(groupName, null, stateTimeout);
 		}
@@ -342,11 +369,13 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 	 */
 	public void receive(Message msg) {
 		byte[] buf = msg.getRawBuffer();
-		if (buf == null) {System.err.println("[" + channel.getAddress()
-					+ "] received null buffer from " + msg.getSrc()
-					+ ", headers: " + msg.printHeaders());
+		if (buf == null) {
+			System.err.println("[" + channel.getAddress()
+					+"]received null buffer from"+msg.getSrc()
+					+",headers:"+ msg.printHeaders());
 			return;
 		}
+
 		try {
 			DrawCommand comm = (DrawCommand) Util.streamableFromByteBuffer(
 					DrawCommand.class, buf, msg.getOffset(), msg.getLength());
@@ -357,9 +386,11 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 				break;
 			case DrawCommand.CLEAR:
 				clearPanel();
+				break;
 			case DrawCommand.TEXT:
 				appendTextMessage(comm);
 				break;
+
 			default:
 				System.err.println("***** received invalid draw command "
 						+ comm.mode);
@@ -369,10 +400,10 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,Chann
 			e.printStackTrace();
 		}
 	}
-
 	public void appendTextMessage(DrawCommand comm) {
 		// TODO Auto-generated method stub
 		String textMessage = comm.textMessage;
+		txtout.append(textMessage+"\n");
 	}
 
 	/**

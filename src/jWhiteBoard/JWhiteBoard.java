@@ -537,6 +537,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener,
 			 groupName=d;
 			 if(!noChannel && !useState)
 				 try {
+					 txt.setText(null);
 					channel.disconnect();
 					channel.connect(groupName);
 				} catch (Exception e1) {
